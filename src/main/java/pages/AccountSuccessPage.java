@@ -5,34 +5,46 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class AccountSuccessPage {
+import root.RootPage;
+
+public class AccountSuccessPage extends RootPage {
 
 	WebDriver driver;
 
 	public AccountSuccessPage(WebDriver driver) {
+		super(driver);
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
 	}
 	
 	@FindBy(xpath = "//a[@class='list-group-item'][text()='Logout']")
-	WebElement logoutOption;
+	private WebElement logoutOption;
 
 	@FindBy(xpath = "//ul[@class='breadcrumb']//a[text()='Success']")
-	WebElement successBreadcrumb;
+	private WebElement successBreadcrumb;
 
 	@FindBy(xpath = "//a[text()='Continue']")
-	WebElement continueButton;
+	private WebElement continueButton;
 
+	@FindBy(id ="content")
+	private WebElement accountSuccessPageContent;
+	
+	public String getContent()
+	{
+		return elementUtilities.getElementText(accountSuccessPageContent);
+	}
+	
 	public boolean isUserLoggedIn() {
-		return logoutOption.isDisplayed();
+		return elementUtilities.isElementDisplayed(logoutOption);
 	}
 	
 	public boolean didWeNavigateToAccountSuccessPage() {
-		return successBreadcrumb.isDisplayed();
+		return elementUtilities.isElementDisplayed(successBreadcrumb);
 	}
 	
-	public void clickOnContinueButton() {
-		continueButton.click();
+	public MyAccountPage clickOnContinueButton() {
+		elementUtilities.clickOnElement(continueButton);
+		return new MyAccountPage(driver);
 	}
 	
 	

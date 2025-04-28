@@ -1,7 +1,5 @@
 package hooks;
 
-import java.util.Properties;
-
 import org.openqa.selenium.WebDriver;
 
 import factory.DriverFactory;

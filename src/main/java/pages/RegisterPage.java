@@ -5,73 +5,136 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class RegisterPage {
+import root.RootPage;
+
+public class RegisterPage extends RootPage {
 
 	WebDriver driver;
 
 	public RegisterPage(WebDriver driver) {
+		super(driver);
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
 	}
 
 	@FindBy(id = "input-firstname")
-	WebElement firstname;
+	private WebElement firstname;
 
 	@FindBy(id = "input-lastname")
-	WebElement lastname;
+	private WebElement lastname;
 
 	@FindBy(id = "input-email")
-	WebElement email;
+	private WebElement email;
 
 	@FindBy(id = "input-telephone")
-	WebElement telephone;
+	private WebElement telephone;
 
 	@FindBy(id = "input-password")
-	WebElement password;
+	private WebElement password;
 
 	@FindBy(id = "input-confirm")
-	WebElement confirmPassword;
+	private WebElement confirmPassword;
 
 	@FindBy(xpath = "//input[@name='newsletter'][@value='1']")
-	WebElement yesNewsletterOption;
+	private WebElement yesNewsletterOption;
+
+	@FindBy(xpath = "//input[@name='newsletter'][@value='0']")
+	private WebElement noNewsletterOption;
 
 	@FindBy(name = "agree")
-	WebElement privacyPolicy;
+	private WebElement privacyPolicy;
 
 	@FindBy(xpath = "//input[@value='Continue']")
-	WebElement continueButton;
+	private WebElement continueButton;
+
+	@FindBy(xpath = "//input[@id='input-firstname']/following-sibling::div")
+	private WebElement firstNameWarning;
+
+	@FindBy(xpath = "//input[@id='input-lastname']/following-sibling::div")
+	private WebElement lastNameWarning;
+
+	@FindBy(xpath = "//input[@id='input-email']/following-sibling::div")
+	private WebElement emailWarning;
+
+	@FindBy(xpath = "//input[@id='input-telephone']/following-sibling::div")
+	private WebElement telephoneWarning;
+
+	@FindBy(xpath = "//input[@id='input-password']/following-sibling::div")
+	private WebElement passwordWarning;
+
+	@FindBy(xpath = "//input[@id='input-confirm']/following-sibling::div")
+	private WebElement passwordConfirmationWarning;
+
+	@FindBy(xpath = "//ul[@class='breadcrumb']//a[text()='Register']")
+	private WebElement registerPageBreadcrumb;
+	
+	public Boolean didWeNavigatetoRegisterpage() {
+		return elementUtilities.isElementDisplayed(registerPageBreadcrumb);
+	}
+	
+	public String getfirstNameWarning() {
+		return elementUtilities.getElementText(firstNameWarning);
+	}
+
+	public String getlastNameWarning() {
+		return elementUtilities.getElementText(lastNameWarning);
+	}
+
+	public String getemailWarning() {
+		return elementUtilities.getElementText(emailWarning);
+	}
+
+	public String gettelephoneWarning() {
+		return elementUtilities.getElementText(telephoneWarning);
+	}
+
+	public String getpasswordWarning() {
+		return elementUtilities.getElementText(passwordWarning);
+	}
+
+	public String getPasswordConfirmationWarning() {
+		return elementUtilities.getElementText(passwordConfirmationWarning);
+	}
 
 	public void enterFirstname(String firstnameText) {
-		firstname.sendKeys(firstnameText);
+		elementUtilities.enterTextIntoElement(firstname, firstnameText);
 	}
+
 	public void enterLastname(String lastnameText) {
-		lastname.sendKeys(lastnameText);
+		elementUtilities.enterTextIntoElement(lastname, lastnameText);
 	}
+
 	public void enterEmail(String emailText) {
-		email.sendKeys(emailText);
+		elementUtilities.enterTextIntoElement(email, emailText);
 	}
+
 	public void enterTelephone(String telephoneText) {
-		telephone.sendKeys(telephoneText);
+		elementUtilities.enterTextIntoElement(telephone, telephoneText);
 	}
+
 	public void enterPassword(String passwordText) {
-		password.sendKeys(passwordText);
+		elementUtilities.enterTextIntoElement(password, passwordText);
 	}
+
 	public void enterConfirmPassword(String confirmPasswordText) {
-		confirmPassword.sendKeys(confirmPasswordText);
+		elementUtilities.enterTextIntoElement(confirmPassword, confirmPasswordText);
 	}
-	
+
 	public void selectYesNewsletterOption() {
-		yesNewsletterOption.click();
+		elementUtilities.clickOnElement(yesNewsletterOption);
 	}
+
+	public void selectNoNewsletterOption() {
+		elementUtilities.clickOnElement(noNewsletterOption);
+	}
+
 	public void selectprivacyPolicy() {
-		privacyPolicy.click();
+		elementUtilities.clickOnElement(privacyPolicy);
 	}
-	
+
 	public AccountSuccessPage clickOnContinueButton() {
-		continueButton.click();
+		elementUtilities.clickOnElement(continueButton);
 		return new AccountSuccessPage(driver);
 	}
-	
-	
-	
+
 }

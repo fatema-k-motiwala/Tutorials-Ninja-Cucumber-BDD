@@ -5,28 +5,39 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class HomePage {
+import root.RootPage;
+
+public class HomePage extends RootPage {
 
 	WebDriver driver;
 
 	public HomePage(WebDriver driver) {
+		super(driver);
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
 	}
 
 	@FindBy(xpath = "//span[text()='My Account']")
-	WebElement myAccountDropMenu;
+	private WebElement myAccountDropMenu;
 
 	@FindBy(linkText = "Register")
-	WebElement registerOption;
+	private WebElement registerOption;
+
+	@FindBy(linkText = "Login")
+	private WebElement loginOption;
 
 	public void clickOnmyAccountDropMenu() {
-		myAccountDropMenu.click();
+		elementUtilities.clickOnElement(myAccountDropMenu);
 	}
 
 	public RegisterPage selectRegisterOption() {
-		registerOption.click();
+		elementUtilities.clickOnElement(registerOption);
 		return new RegisterPage(driver);
+	}
+	
+	public LoginPage selectLoginOption() {
+		elementUtilities.clickOnElement(loginOption);
+		return new LoginPage(driver);
 	}
 
 }
