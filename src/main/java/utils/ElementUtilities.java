@@ -4,6 +4,7 @@ import java.util.NoSuchElementException;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 public class ElementUtilities {
 
@@ -23,6 +24,9 @@ public class ElementUtilities {
 		return b;
 	}
 	
+	public String getElementDomAttribute(WebElement element, String attributeName) {
+		return element.getDomAttribute(attributeName);
+	}
 	
 	public void clickOnElement(WebElement element) {
 		if (isElementDisplayed(element) && element.isEnabled()) {
@@ -41,7 +45,7 @@ public class ElementUtilities {
 		boolean b = false;
 		try {
 			b = element.isDisplayed();
-		} catch (NoSuchElementException e) {
+		} catch (Exception e) {
 			b = false;
 		}
 		return b;
@@ -54,5 +58,8 @@ public class ElementUtilities {
 		}
 		return elementText;
 	}
-
+	
+	public String getElementDomProperty(WebElement element, String attributeName) {
+		return element.getDomProperty(attributeName);
+	}
 }

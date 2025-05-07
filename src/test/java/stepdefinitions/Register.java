@@ -4,7 +4,11 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.junit.Assert;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 
 import factory.DriverFactory;
 import io.cucumber.datatable.DataTable;
@@ -19,10 +23,11 @@ import pages.MyAccountPage;
 import pages.NewsLetterPage;
 import pages.RegisterPage;
 import pages.RightColumnOptions;
+import stepdefinitions.base.Base;
 import utils.CommonUtils;
 
-public class Register {
-	
+public class Register extends Base{
+
 	WebDriver driver;
 	Properties prop;
 	HomePage homepage;
@@ -32,6 +37,7 @@ public class Register {
 	NewsLetterPage newsLetterPage;
 	LoginPage loginPage;
 	RightColumnOptions rightColumnOptions;
+	Actions actions ;
 	
 	@Given("User navigates to Register Account Page")
 	public void user_navigates_to_register_account_page() {
@@ -41,7 +47,7 @@ public class Register {
 		homepage.clickOnmyAccountDropMenu();
 		registerPage = homepage.selectRegisterOption();
 	}
-	
+
 	@Given("User opens Application URL in the browser")
 	public void user_opens_application_url_in_the_browser() {
 		driver = DriverFactory.getDriver();
@@ -53,7 +59,7 @@ public class Register {
 	public void user_clicks_on_my_account_dropmenu() {
 		homepage.clickOnmyAccountDropMenu();
 	}
-	
+
 	@When("User selects Register option")
 	public void user_selects_register_option() {
 		registerPage = homepage.selectRegisterOption();
@@ -73,19 +79,20 @@ public class Register {
 		registerPage.enterTelephone(map.get("telephone"));
 		registerPage.enterPassword(map.get("password"));
 		registerPage.enterConfirmPassword(map.get("password"));
-		
+
 	}
 
 	@And("User selects Yes option for Newsletter")
 	public void User_selects_Yes_option_for_Newsletter() {
 		registerPage.selectYesNewsletterOption();
 	}
-	
+
 	@And("User selects No option for Newsletter")
 	public void User_selects_No_option_for_Newsletter() {
-		registerPage.selectNoNewsletterOption();;
+		registerPage.selectNoNewsletterOption();
+		;
 	}
-	
+
 	@And("User selects Privacy Policy Field")
 	public void user_selects_privacy_policy_field() {
 		registerPage.selectprivacyPolicy();
@@ -109,10 +116,14 @@ public class Register {
 	@And("Proper details should be displayed on the Account Sucess Page")
 	public void proper_details_should_be_displayed_on_the_account_sucess_page() {
 		Assert.assertTrue(accountSuccessPage.getContent().contains("Your Account Has Been Created!"));
-		Assert.assertTrue(accountSuccessPage.getContent().contains("Congratulations! Your new account has been successfully created!"));
-		Assert.assertTrue(accountSuccessPage.getContent().contains("You can now take advantage of member privileges to enhance your online shopping experience with us."));
-		Assert.assertTrue(accountSuccessPage.getContent().contains("If you have ANY questions about the operation of this online shop, please e-mail the store owner."));
-		Assert.assertTrue(accountSuccessPage.getContent().contains("A confirmation has been sent to the provided e-mail address. If you have not received it within the hour, please contact us."));
+		Assert.assertTrue(accountSuccessPage.getContent()
+				.contains("Congratulations! Your new account has been successfully created!"));
+		Assert.assertTrue(accountSuccessPage.getContent().contains(
+				"You can now take advantage of member privileges to enhance your online shopping experience with us."));
+		Assert.assertTrue(accountSuccessPage.getContent().contains(
+				"If you have ANY questions about the operation of this online shop, please e-mail the store owner."));
+		Assert.assertTrue(accountSuccessPage.getContent().contains(
+				"A confirmation has been sent to the provided e-mail address. If you have not received it within the hour, please contact us."));
 	}
 
 	@When("User clicks on Continue button on Account Sucess Page")
@@ -143,14 +154,12 @@ public class Register {
 		Assert.assertEquals(registerPage.getpasswordWarning(), expectedPasswordWarning);
 		Assert.assertEquals(registerPage.getPageLevelWarning(), expectedPrivacyPolicyWarning);
 	}
-	
 
 	@When("User clicks on Subscribe or UnSubscribe to NewsLetter Option")
 	public void user_clicks_on_subscribe_or_un_subscribe_to_news_letter_option() {
 		newsLetterPage = myAccountPage.clickOnSubscribeUnsubscribeToNewsletterOption();
 	}
 
-	
 	@Then("Yes option in the newsletter page should be displayed as selected")
 	public void yes_option_in_the_newsletter_page_should_be_displayed_as_selected() {
 		Assert.assertTrue(newsLetterPage.didWeNavigateToNewsletterPage());
@@ -170,9 +179,8 @@ public class Register {
 
 	@When("User clicks on Continue button on Login Page")
 	public void user_clicks_on_continue_button_on_login_page() {
-	 registerPage = loginPage.clickOnContinueButton();
+		registerPage = loginPage.clickOnContinueButton();
 	}
-
 
 	@When("Clicks on Register option from Right column options")
 	public void clicks_on_register_option_from_right_column_options() {
@@ -181,9 +189,232 @@ public class Register {
 
 	}
 
+	@When("User enters the below fields")
+	public void user_enters_the_below_fields(DataTable dataTable) {
+		Map<String, String> map = dataTable.asMap();
+		registerPage.enterFirstname(map.get("firstname"));
+		registerPage.enterLastname(map.get("lastname"));
+		registerPage.enterEmail(CommonUtils.generateEmailWithNanoTime());
+		registerPage.enterTelephone(map.get("telephone"));
+		registerPage.enterPassword(map.get("password"));
+		registerPage.enterConfirmPassword(map.get("confirmPassword"));
+	}
+
+	@Then("Proper warning messages regarding password mistmatch should be displayed")
+	public void proper_warning_messages_regarding_password_mistmatch_should_be_displayed() {
+		String expectedWarning = "Password confirmation does not match password!";
+		Assert.assertEquals(expectedWarning, registerPage.getPasswordConfirmationWarning());
+	}
+
+	@When("User enters below fields except email field")
+	public void user_enters_below_fields_except_email_field(DataTable dataTable) {
+		Map<String, String> map = dataTable.asMap();
+		registerPage.enterFirstname(map.get("firstname"));
+		registerPage.enterLastname(map.get("lastname"));
+		registerPage.enterTelephone(map.get("telephone"));
+		registerPage.enterPassword(map.get("password"));
+		registerPage.enterConfirmPassword(map.get("password"));
+	}
+
+	@When("User enters an existing email address into the email field")
+	public void user_enters_an_existing_email_address_into_the_email_field() {
+		registerPage.enterEmail(prop.getProperty("existingEmail"));
+	}
+
+	@Then("Proper warning messages regarding account exists with this email should be displayed")
+	public void proper_warning_messages_regarding_account_exists_with_this_email_should_be_displayed() {
+		String expectedWarning = "Warning: E-Mail Address is already registered!";
+		Assert.assertEquals(expectedWarning, registerPage.getPageLevelWarning());
+
+	}
+
+	@When("User enters an invalid email address into the email field")
+	public void user_enters_an_invalid_email_address_into_the_email_field() {
+		registerPage.enterEmail(prop.getProperty("invalidEmailOne"));
+	}
+
+	@Then("Proper warning message provide valid email address should be displayed")
+	public void proper_warning_message_provide_valid_email_address_should_be_displayed() {
+		String browserName = (prop.getProperty("browserName"));
+
+		if (browserName.equalsIgnoreCase("chrome") || browserName.equalsIgnoreCase("edge")) {
+			String expectedWarningMessageOne = "Please include an '@' in the email address. 'amotoori' is missing an '@'.";
+			Assert.assertEquals(registerPage.getEmailValidationMessage(), expectedWarningMessageOne);
+		} else if (browserName.equalsIgnoreCase("firefox")) {
+			String expectedWarningMessageOne = "Please enter an email address.";
+			Assert.assertEquals(registerPage.getEmailValidationMessage(), expectedWarningMessageOne);
+		}
+
+	}
+
+	@Then("Proper warning message to provide valid phone number should be displayed")
+	public void proper_warning_message_to_provide_valid_phone_number_should_be_displayed() {
+		String expectedWarningMessage = "Telephone number entered by you is invalid!";
+		boolean b = false;
+		try {
+			if (registerPage.gettelephoneWarning().equals(expectedWarningMessage)) {
+				b = true;
+			}
+		} catch (NoSuchElementException e) {
+			b = false;
+		}
+		Assert.assertTrue(b);
+
+		Assert.assertFalse(accountSuccessPage.didWeNavigateToAccountSuccessPage());
+
+	}
+
+	@When("User fills all the below fields using keyboard keys")
+	public void user_fills_all_the_below_fields_using_keyboard_keys(DataTable dataTable) {
+		Map<String, String> map = dataTable.asMap();
+		actions = clickKeyboradKeyMultipleTimes(getActions(driver), Keys.TAB, 23);
+		actions = typeTextUsingActions(actions, map.get("firstname"));
+		actions = clickKeyboradKeyMultipleTimes(actions, Keys.TAB, 1);
+		actions = typeTextUsingActions(actions, map.get("lastname"));
+		actions = clickKeyboradKeyMultipleTimes(actions, Keys.TAB, 1);
+		actions = typeTextUsingActions(actions, CommonUtils.generateEmailWithNanoTime());
+		actions = clickKeyboradKeyMultipleTimes(actions, Keys.TAB, 1);
+		actions = typeTextUsingActions(actions, map.get("telephone"));
+		actions = clickKeyboradKeyMultipleTimes(actions, Keys.TAB, 1);
+		actions = typeTextUsingActions(actions, map.get("password"));
+		actions = clickKeyboradKeyMultipleTimes(actions, Keys.TAB, 1);
+		actions = typeTextUsingActions(actions, map.get("password"));
+	
+	}
+	@When("User selects newsletter and privacy policy field using keyboard keys")
+	public void user_selects_newsletter_and_privacy_policy_field_using_keyboard_keys() {
+		actions = clickKeyboradKeyMultipleTimes(actions, Keys.TAB, 1);
+		actions = clickKeyboradKeyMultipleTimes(actions, Keys.ARROW_LEFT, 1);
+		actions = clickKeyboradKeyMultipleTimes(actions, Keys.TAB, 2);
+		actions = clickKeyboradKeyMultipleTimes(actions, Keys.SPACE, 1);
+ 
+	}
+	@When("User selects Continue button also using keyboard")
+	public void user_selects_continue_button_also_using_keyboard() {
+		actions = clickKeyboradKeyMultipleTimes(actions, Keys.TAB, 1);
+		actions = clickKeyboradKeyMultipleTimes(actions, Keys.ENTER, 1);
+		accountSuccessPage = new AccountSuccessPage(driver);
+	}
+	
+	@Then("Proper Placeholder texts should be displayed for all the text fields")
+	public void proper_placeholder_texts_should_be_displayed_for_all_the_text_fields() {
+		Assert.assertEquals(registerPage.getFirstNamePlaceHolderText(), "First Name");
+		Assert.assertEquals(registerPage.getLasttNamePlaceHolderText(), "Last Name");
+		Assert.assertEquals(registerPage.getEmailPlaceHolderText(), "E-Mail");
+		Assert.assertEquals(registerPage.getTelephonePlaceHolderText(), "Telephone");
+		Assert.assertEquals(registerPage.getPasswordDomAttribute("placeholder"), "Password");
+		Assert.assertEquals(registerPage.getConfirmPasswordDomAttribute("placeholder"), "Password Confirm");
+
+	}
+
+	@Then("All the mandatory fields in Register Account page should be marked with * symbol")
+	public void all_the_mandatory_fields_in_register_account_page_should_be_marked_with_symbol() {
+		String expectedContent = "\"* \"";
+		String expectedColor = "rgb(255, 0, 0)";
+
+		JavascriptExecutor jse = (JavascriptExecutor) driver;
+		String fistNameLabelContent = (String) jse.executeScript(
+				"return window.getComputedStyle(arguments[0],'::before').getPropertyValue('content');",
+				registerPage.getFirstNameLabel());
+		Assert.assertEquals(fistNameLabelContent, expectedContent);
+		String fistNameLabelColor = (String) jse.executeScript(
+				"return window.getComputedStyle(arguments[0],'::before').getPropertyValue('color')",
+				registerPage.getFirstNameLabel());
+		Assert.assertEquals(fistNameLabelColor, expectedColor);
+
+		String lastNameLabelContent = (String) jse.executeScript(
+				"return window.getComputedStyle(arguments[0],'::before').getPropertyValue('content');",
+				registerPage.getLastNameLabel());
+		Assert.assertEquals(lastNameLabelContent, expectedContent);
+		String lastNameLabelColor = (String) jse.executeScript(
+				"return window.getComputedStyle(arguments[0],'::before').getPropertyValue('color')",
+				registerPage.getLastNameLabel());
+		Assert.assertEquals(lastNameLabelColor, expectedColor);
+
+		String emailLabelContent = (String) jse.executeScript(
+				"return window.getComputedStyle(arguments[0],'::before').getPropertyValue('content');",
+				registerPage.getEmailLabel());
+		Assert.assertEquals(emailLabelContent, expectedContent);
+		String emailLabelColor = (String) jse.executeScript(
+				"return window.getComputedStyle(arguments[0],'::before').getPropertyValue('color')",
+				registerPage.getEmailLabel());
+		Assert.assertEquals(emailLabelColor, expectedColor);
+
+		String telephoneLabelContent = (String) jse.executeScript(
+				"return window.getComputedStyle(arguments[0],'::before').getPropertyValue('content');",
+				registerPage.getTelephoneLabel());
+		Assert.assertEquals(telephoneLabelContent, expectedContent);
+		String telephoneLabelColor = (String) jse.executeScript(
+				"return window.getComputedStyle(arguments[0],'::before').getPropertyValue('color')",
+				registerPage.getTelephoneLabel());
+		Assert.assertEquals(telephoneLabelColor, expectedColor);
+
+		String passwordLabelContent = (String) jse.executeScript(
+				"return window.getComputedStyle(arguments[0],'::before').getPropertyValue('content');",
+				registerPage.getPasswordLabel());
+		Assert.assertEquals(passwordLabelContent, expectedContent);
+		String passwordLabelColor = (String) jse.executeScript(
+				"return window.getComputedStyle(arguments[0],'::before').getPropertyValue('color')",
+				registerPage.getPasswordLabel());
+		Assert.assertEquals(passwordLabelColor, expectedColor);
+
+		String passwordConfirmLabelContent = (String) jse.executeScript(
+				"return window.getComputedStyle(arguments[0],'::before').getPropertyValue('content');",
+				registerPage.getPasswordConfirmLabel());
+		Assert.assertEquals(passwordConfirmLabelContent, expectedContent);
+		String passwordConfirmLabelColor = (String) jse.executeScript(
+				"return window.getComputedStyle(arguments[0],'::before').getPropertyValue('color')",
+				registerPage.getPasswordConfirmLabel());
+		Assert.assertEquals(passwordConfirmLabelColor, expectedColor);
+
+		String privacyPolicyLabelContent = (String) jse.executeScript(
+				"return window.getComputedStyle(arguments[0],'::before').getPropertyValue('content');",
+				registerPage.getPrivacyPolicyLabel());
+		Assert.assertEquals(privacyPolicyLabelContent, expectedContent);
+		String privacyPolicyLabelColor = (String) jse.executeScript(
+				"return window.getComputedStyle(arguments[0],'::before').getPropertyValue('color')",
+				registerPage.getPrivacyPolicyLabel());
+		Assert.assertEquals(privacyPolicyLabelColor, expectedColor);
+
+	}
+
+	@When("User enters only spaces into all the mandatory fields")
+	public void user_enters_only_spaces_into_all_the_mandatory_fields() {
+		registerPage.enterFirstname("     ");
+		registerPage.enterLastname("     ");
+		registerPage.enterTelephone("     ");
+		registerPage.enterPassword("     ");
+		registerPage.enterConfirmPassword("     ");
+	}
+	
+	@Then("Warning message should be displayed for these Mandatory fields")
+	public void warning_message_should_be_displayed_for_these_mandatory_fields() {
+		String browserName = (prop.getProperty("browserName"));
+		String expectedFirstNameWarning = "First Name must be between 1 and 32 characters!";
+		String expectedLastNameWarning = "Last Name must be between 1 and 32 characters!";
+		String expectedEmailWarning = "E-Mail Address does not appear to be valid!";
+		String expectedTelephoneWarning = "Telephone does not appear to be valid!";
+
+		if (browserName.equalsIgnoreCase("chrome") || browserName.equalsIgnoreCase("edge")) {
+			Assert.assertEquals(registerPage.getfirstNameWarning(), expectedFirstNameWarning);
+			Assert.assertEquals(registerPage.getlastNameWarning(), expectedLastNameWarning);
+			Assert.assertEquals(registerPage.getemailWarning(), expectedEmailWarning);
+			Assert.assertEquals(registerPage.gettelephoneWarning(), expectedTelephoneWarning);
+		} else if (browserName.equals("firefox")) {
+			String expectedWarningMessageOne = "Please enter an email address.";
+			Assert.assertEquals(registerPage.getEmailValidationMessage(), expectedWarningMessageOne);
+		}
+
+	}
 
 
 
 
+
+
+
+
+	
+	
 	
 }

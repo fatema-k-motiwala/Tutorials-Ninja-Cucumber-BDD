@@ -35,6 +35,27 @@ public class RegisterPage extends RootPage {
 	@FindBy(id = "input-confirm")
 	private WebElement confirmPassword;
 
+	@FindBy(css = "label[for='input-firstname']")
+	private WebElement firstNameLabel;
+
+	@FindBy(css = "label[for='input-lastname']")
+	private WebElement lastNameLabel;
+
+	@FindBy(css = "label[for='input-email']")
+	private WebElement emailLabel;
+
+	@FindBy(css = "label[for='input-telephone']")
+	private WebElement telephoneLabel;
+
+	@FindBy(css = "label[for='input-password']")
+	private WebElement passwordLabel;
+
+	@FindBy(css = "label[for='input-confirm']")
+	private WebElement passwordConfirmLabel;
+
+	@FindBy(css = "div[class='pull-right']")
+	private WebElement privacyPolicyLabel;
+
 	@FindBy(xpath = "//input[@name='newsletter'][@value='1']")
 	private WebElement yesNewsletterOption;
 
@@ -137,4 +158,63 @@ public class RegisterPage extends RootPage {
 		return new AccountSuccessPage(driver);
 	}
 
+	public String getEmailValidationMessage() {
+		return elementUtilities.getElementDomProperty(email, "validationMessage");
+	}
+
+
+	public String getFirstNamePlaceHolderText() {
+		return elementUtilities.getElementDomAttribute(firstname, "placeholder");
+	}
+
+	public String getLasttNamePlaceHolderText() {
+		return elementUtilities.getElementDomAttribute(lastname, "placeholder");
+	}
+
+	public String getEmailPlaceHolderText() {
+		return elementUtilities.getElementDomAttribute(email, "placeholder");
+	}
+
+	public String getTelephonePlaceHolderText() {
+		return elementUtilities.getElementDomAttribute(telephone, "placeholder");
+	}
+
+	public String getPasswordDomAttribute(String attributeName) {
+		return elementUtilities.getElementDomAttribute(password, attributeName);
+	}
+
+	public String getConfirmPasswordDomAttribute(String attributeName) {
+		return elementUtilities.getElementDomAttribute(confirmPassword, attributeName);
+	}
+
+	public WebElement getFirstNameLabel() {
+		return firstNameLabel;
+	}
+
+	public WebElement getLastNameLabel() {
+		return lastNameLabel;
+	}
+
+	public WebElement getEmailLabel() {
+		return emailLabel;
+	}
+
+	public WebElement getTelephoneLabel() {
+		return telephoneLabel;
+	}
+
+	public WebElement getPasswordLabel() {
+		return passwordLabel;
+	}
+
+	public WebElement getPasswordConfirmLabel() {
+		return passwordConfirmLabel;
+	}
+
+	public WebElement getPrivacyPolicyLabel() {
+		return privacyPolicyLabel;
+	}
+
+
+	
 }
