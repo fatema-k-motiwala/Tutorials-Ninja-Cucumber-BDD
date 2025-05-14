@@ -93,6 +93,46 @@ public class RegisterPage extends RootPage {
 		return elementUtilities.isElementDisplayed(registerPageBreadcrumb);
 	}
 	
+	public void clearFirstNameField() {
+		elementUtilities.clearTextfromElement(firstname);
+	}
+
+	public void clearlastNameField() {
+		elementUtilities.clearTextfromElement(lastname);
+	}
+	
+	public void clearEmailField() {
+		elementUtilities.clearTextfromElement(email);
+	}
+
+	public void clearTelephoneField() {
+		elementUtilities.clearTextfromElement(telephone);
+	}
+
+	public void clearPasswordField() {
+		elementUtilities.clearTextfromElement(password);
+	}
+	
+	public Boolean isFirstNameWarningDisplayed() {
+		return elementUtilities.isElementDisplayed(firstNameWarning);
+	}
+
+	public Boolean isPasswordWarningDisplayed() {
+		return elementUtilities.isElementDisplayed(passwordWarning);
+	}
+
+	public Boolean isTelephoneWarningDisplayed() {
+		return elementUtilities.isElementDisplayed(telephoneWarning);
+	}
+
+	public Boolean isLastNameWarningDisplayed() {
+		return elementUtilities.isElementDisplayed(lastNameWarning);
+	}
+
+	public Boolean isEmailWarningDisplayed() {
+		return elementUtilities.isElementDisplayed(emailWarning);
+	}
+	
 	public String getfirstNameWarning() {
 		return elementUtilities.getElementText(firstNameWarning);
 	}
@@ -214,6 +254,36 @@ public class RegisterPage extends RootPage {
 	public WebElement getPrivacyPolicyLabel() {
 		return privacyPolicyLabel;
 	}
+
+	public String getFirstNameCSSValue(String propertyName) {
+		return elementUtilities.getElementCSSValue(firstname, propertyName);
+	}
+
+	public String getPasswordCSSValue(String propertyName) {
+		return elementUtilities.getElementCSSValue(password, propertyName);
+
+	}
+
+	public String getPasswordConfirmCSSValue(String propertyName) {
+		return elementUtilities.getElementCSSValue(confirmPassword, propertyName);
+	}
+
+	public String getContinueButtonCSSValue(String propertyName) {
+		return elementUtilities.getElementCSSValue(continueButton, propertyName);
+	}
+
+	public String getTelephoneCSSValue(String propertyName) {
+		return elementUtilities.getElementCSSValue(telephone, propertyName);
+	}
+
+	public String getLastNameCSSValue(String propertyName) {
+		return elementUtilities.getElementCSSValue(lastname, propertyName);
+	}
+
+	public String getEmailCSSValue(String propertyName) {
+		return elementUtilities.getElementCSSValue(email, propertyName);
+	}
+
 
 
 	

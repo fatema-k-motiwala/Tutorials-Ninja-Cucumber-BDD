@@ -151,7 +151,6 @@ Given User opens Application URL in the browser
 When User navigates to Register Account Page
 Then All the mandatory fields in Register Account page should be marked with * symbol
 
-@trynow
 Scenario: Verify mandatory fields in Register Account page are not accepting only spaces
 Given User navigates to Register Account Page
 When User enters only spaces into all the mandatory fields
@@ -159,9 +158,30 @@ And User selects Privacy Policy Field
 And User clicks on Continue button
 Then Warning message should be displayed for these Mandatory fields
 
+Scenario Outline: Verify Registering Account using passwords not following complexity standards
+Given User navigates to Register Account Page
+When User enters below fields except password field
+|firstname 	|Fatema		|
+|lastname 	|Motiwala	|
+|telephone 	|1234567890	|
+And User enters <password> which is not following password complexity standards
+And User selects Privacy Policy Field
+And User clicks on Continue button
+Then Proper Warning messages should be displayed about password complexity not being followed
+Examples:
+|password |
+|12345		|
+|abcdefghi|
+|abcd1234 |
+|abcd123$ |
+|ABCD456! |
 
-
-
+@trynow
+@arun
+Scenario: Verify fields in the Register Account page are according to the Client Requirements
+Given User opens Application URL in the browser
+And User navigates to Register Account Page
+Then All the fields in the Register Account page are designed according to the Client Requirements
 
 
 

@@ -1,10 +1,7 @@
 package utils;
 
-import java.util.NoSuchElementException;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 
 public class ElementUtilities {
 
@@ -41,6 +38,12 @@ public class ElementUtilities {
 		}
 	}
 
+	public void clearTextfromElement(WebElement element) {
+		if (isElementDisplayed(element) && element.isEnabled()) {
+			element.clear();
+		}
+	}
+
 	public boolean isElementDisplayed(WebElement element) {
 		boolean b = false;
 		try {
@@ -50,6 +53,11 @@ public class ElementUtilities {
 		}
 		return b;
 	}
+	
+	public String getElementCSSValue(WebElement element, String cssPropertyName) {
+		return element.getCssValue(cssPropertyName);
+	}
+
 
 	public String getElementText(WebElement element) {
 		String elementText = "";

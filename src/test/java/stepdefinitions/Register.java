@@ -1,14 +1,20 @@
 package stepdefinitions;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.io.FileHandler;
 
 import factory.DriverFactory;
 import io.cucumber.datatable.DataTable;
@@ -17,6 +23,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pages.AccountSuccessPage;
+import pages.HeaderOptions;
 import pages.HomePage;
 import pages.LoginPage;
 import pages.MyAccountPage;
@@ -38,6 +45,7 @@ public class Register extends Base{
 	LoginPage loginPage;
 	RightColumnOptions rightColumnOptions;
 	Actions actions ;
+	HeaderOptions headerOptions;
 	
 	@Given("User navigates to Register Account Page")
 	public void user_navigates_to_register_account_page() {
@@ -406,6 +414,239 @@ public class Register extends Base{
 		}
 
 	}
+
+	@When("User enters below fields except password field")
+	public void user_enters_below_fields_except_password_field(DataTable dataTable) {
+		Map<String, String> map = dataTable.asMap();
+		registerPage.enterFirstname(map.get("firstname"));
+		registerPage.enterLastname(map.get("lastname"));
+		registerPage.enterEmail(CommonUtils.generateEmailWithNanoTime());
+		registerPage.enterTelephone(map.get("telephone"));
+	}
+
+	@And("^User enters (.+) which is not following password complexity standards$")
+	public void user_enters_which_is_not_following_password_complexity_standards(String password) {
+		registerPage.enterPassword(password);
+		registerPage.enterConfirmPassword(password);
+		System.out.println(password);
+	}
+	
+	@Then("Proper Warning messages should be displayed about password complexity not being followed")
+	public void proper_warning_messages_should_be_displayed_about_password_complexity_not_being_followed() {
+
+		String expectedWarning = "Enter password which follows Password Complexity Standard!";
+		boolean b = false;
+		try {
+			if (registerPage.getpasswordWarning().equals(expectedWarning)) {
+				b = true;
+			}
+		} catch (NoSuchElementException e) {
+			b = false;
+		}
+		Assert.assertTrue(b);
+	}
+
+	@Then("All the fields in the Register Account page are designed according to the Client Requirements")
+	public void all_the_fields_in_the_register_account_page_are_designed_according_to_the_client_requirements() throws IOException {
+		String expectedHeight = "34px";
+		String expectedWidth = "701.25px";
+
+		// First Name Field check
+		Assert.assertEquals(registerPage.getFirstNameCSSValue("height"), expectedHeight);
+		;
+		Assert.assertEquals(registerPage.getFirstNameCSSValue("width"), expectedWidth);
+
+		String exptectedFirstNameWarning = "First Name must be between 1 and 32 characters!";
+		registerPage.clickOnContinueButton();
+		Assert.assertEquals(registerPage.getfirstNameWarning(), exptectedFirstNameWarning);
+		registerPage.enterFirstname("a");
+		registerPage.clickOnContinueButton();
+		boolean firstNameWarningStatus = false;
+		try {
+			firstNameWarningStatus = registerPage.isFirstNameWarningDisplayed();
+		} catch (NoSuchElementException e) {
+			firstNameWarningStatus = false;
+		}
+		Assert.assertFalse(firstNameWarningStatus);
+		registerPage.clearFirstNameField();
+		registerPage.enterFirstname("bcdeabcdeabcdeabcdeabcdeabcdeaba");
+		registerPage.clickOnContinueButton();
+		firstNameWarningStatus = false;
+		try {
+			firstNameWarningStatus = registerPage.isFirstNameWarningDisplayed();
+		} catch (NoSuchElementException e) {
+			firstNameWarningStatus = false;
+		}
+		Assert.assertFalse(firstNameWarningStatus);
+		registerPage.clearFirstNameField();
+		registerPage.enterFirstname("abcdeabcdeabcdeabcdeabcdeabcdeabc");
+
+		registerPage.clickOnContinueButton();
+		Assert.assertEquals(registerPage.getfirstNameWarning(), exptectedFirstNameWarning);
+
+		// Last Name Field check
+		Assert.assertEquals(registerPage.getLastNameCSSValue("height"), expectedHeight);
+		Assert.assertEquals(registerPage.getLastNameCSSValue("width"), expectedWidth);
+
+		String exptectedLastNameWarning = "Last Name must be between 1 and 32 characters!";
+		registerPage.clickOnContinueButton();
+		Assert.assertEquals(registerPage.getlastNameWarning(), exptectedLastNameWarning);
+		registerPage.enterLastname("a");
+		driver.findElement(By.xpath("//input[@value='Continue']")).click();
+		boolean lastNameWarningStatus = false;
+		try {
+			lastNameWarningStatus = registerPage.isLastNameWarningDisplayed();
+		} catch (NoSuchElementException e) {
+			lastNameWarningStatus = false;
+		}
+		Assert.assertFalse(lastNameWarningStatus);
+		registerPage.clearlastNameField();
+		registerPage.enterLastname("abcdeabcdeabcdeabcdeabcdeabcdeab");
+		registerPage.clickOnContinueButton();
+		lastNameWarningStatus = false;
+		try {
+			lastNameWarningStatus = registerPage.isLastNameWarningDisplayed();
+		} catch (NoSuchElementException e) {
+			lastNameWarningStatus = false;
+		}
+		Assert.assertFalse(lastNameWarningStatus);
+		registerPage.clearEmailField();
+		registerPage.enterLastname("abcdeabcdeabcdeabcdeabcdeabcdeabc");
+		registerPage.clickOnContinueButton();
+		Assert.assertEquals(registerPage.getlastNameWarning(), exptectedLastNameWarning);
+
+		// Email Field check
+		Assert.assertEquals(registerPage.getEmailCSSValue("height"), expectedHeight);
+		Assert.assertEquals(registerPage.getEmailCSSValue("width"), expectedWidth);
+		registerPage.enterEmail("adfdsfasdfadfdsssssafasdfasdfasdfadsfasdf@email.com");
+		registerPage.clickOnContinueButton();
+		boolean emailWarningStatus = false;
+		try {
+			emailWarningStatus = registerPage.isEmailWarningDisplayed();
+		} catch (NoSuchElementException e) {
+			emailWarningStatus = false;
+		}
+		Assert.assertFalse(emailWarningStatus);
+
+		// Telephone Field check
+		Assert.assertEquals(registerPage.getTelephoneCSSValue("height"), expectedHeight);
+		Assert.assertEquals(registerPage.getTelephoneCSSValue("width"), expectedWidth);
+
+		String expectedTelephoneWarning = "Telephone must be between 3 and 32 characters!";
+		registerPage.clickOnContinueButton();
+		Assert.assertEquals(registerPage.gettelephoneWarning(), expectedTelephoneWarning);
+		registerPage.clearTelephoneField();
+		registerPage.enterTelephone("1");
+		registerPage.clickOnContinueButton();
+		Assert.assertEquals(registerPage.gettelephoneWarning(), expectedTelephoneWarning);
+		registerPage.clearTelephoneField();
+		registerPage.enterTelephone("12");
+		registerPage.clickOnContinueButton();
+		Assert.assertEquals(registerPage.gettelephoneWarning(), expectedTelephoneWarning);
+		registerPage.clearTelephoneField();
+		registerPage.enterTelephone("123");
+		registerPage.clickOnContinueButton();
+		boolean telephoneWarningStatus = false;
+		try {
+			telephoneWarningStatus = registerPage.isTelephoneWarningDisplayed();
+		} catch (NoSuchElementException e) {
+			telephoneWarningStatus = false;
+		}
+		Assert.assertFalse(telephoneWarningStatus);
+		registerPage.clearTelephoneField();
+		registerPage.enterTelephone("12345678901234567890123456789012");
+		registerPage.clickOnContinueButton();
+		telephoneWarningStatus = false;
+		try {
+			telephoneWarningStatus = registerPage.isTelephoneWarningDisplayed();
+		} catch (NoSuchElementException e) {
+			telephoneWarningStatus = false;
+		}
+		Assert.assertFalse(telephoneWarningStatus);
+		registerPage.clearTelephoneField();
+		registerPage.enterTelephone("123456789012345678901234567890123");
+		registerPage.clickOnContinueButton();
+		Assert.assertEquals(registerPage.gettelephoneWarning(), expectedTelephoneWarning);
+
+		// Password Field check
+		Assert.assertEquals(registerPage.getPasswordCSSValue("height"), expectedHeight);
+		Assert.assertEquals(registerPage.getPasswordCSSValue("width"), expectedWidth);
+		String expectedPasswordWarning = "Password must be between 4 and 20 characters!";
+		registerPage.clickOnContinueButton();
+		Assert.assertEquals(registerPage.getpasswordWarning(), expectedPasswordWarning);
+		registerPage.clearPasswordField();
+		registerPage.enterPassword("1");
+		registerPage.clickOnContinueButton();
+		Assert.assertEquals(registerPage.getpasswordWarning(), expectedPasswordWarning);
+		registerPage.clearPasswordField();
+		registerPage.enterPassword("12");
+		registerPage.clickOnContinueButton();
+		Assert.assertEquals(registerPage.getpasswordWarning(), expectedPasswordWarning);
+		registerPage.clearPasswordField();
+		registerPage.enterPassword("123");
+		registerPage.clickOnContinueButton();
+		Assert.assertEquals(registerPage.getpasswordWarning(), expectedPasswordWarning);
+		registerPage.clearPasswordField();
+		registerPage.enterPassword("1234");
+		registerPage.clickOnContinueButton();
+		boolean passwordWarningStatus = false;
+		try {
+			passwordWarningStatus = registerPage.isPasswordWarningDisplayed();
+		} catch (NoSuchElementException e) {
+			passwordWarningStatus = false;
+		}
+		Assert.assertFalse(passwordWarningStatus);
+		registerPage.clearPasswordField();
+		registerPage.enterPassword("12345678901234567890");
+		registerPage.clickOnContinueButton();
+		passwordWarningStatus = false;
+		try {
+			passwordWarningStatus = registerPage.isPasswordWarningDisplayed();
+		} catch (NoSuchElementException e) {
+			passwordWarningStatus = false;
+		}
+		Assert.assertFalse(passwordWarningStatus);
+		registerPage.clearPasswordField();
+		registerPage.enterPassword("123456789012345678901");
+		registerPage.clickOnContinueButton();
+		passwordWarningStatus = false;
+		try {
+			passwordWarningStatus = registerPage.isPasswordWarningDisplayed();
+		} catch (NoSuchElementException e) {
+			passwordWarningStatus = false;
+		}
+		Assert.assertTrue(passwordWarningStatus);
+
+		// Password Confirm Field check
+		Assert.assertEquals(registerPage.getPasswordConfirmCSSValue("height"), expectedHeight);
+		Assert.assertEquals(registerPage.getPasswordConfirmCSSValue("width"), expectedWidth);
+
+		// Continue Button
+		Assert.assertEquals(registerPage.getContinueButtonCSSValue("color"), "rgba(255, 255, 255, 1)");
+		Assert.assertEquals(registerPage.getContinueButtonCSSValue("background-color"), "rgba(34, 154, 200, 1)");
+		Assert.assertEquals(registerPage.getContinueButtonCSSValue("font-size"), "12px");
+
+		headerOptions = registerPage.getHeaderOptions();
+		headerOptions.clickOnMyAccountDropMenu();
+		headerOptions.selectRegisterOption();
+
+		TakesScreenshot ts = (TakesScreenshot) driver;
+		File srcScreenshot = ts.getScreenshotAs(OutputType.FILE);
+		try {
+			FileHandler.copy(srcScreenshot,
+					new File(System.getProperty("user.dir") + "\\Screenshots\\AcutalRAPageAligment.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		Assert.assertFalse(CommonUtils.compareTwoScreenshots(
+				System.getProperty("user.dir") + "\\Screenshots\\AcutalRAPageAligment.png",
+				System.getProperty("user.dir") + "\\Screenshots\\ExpectedRAPageAligment.png"));
+
+
+	}
+
+
 
 
 

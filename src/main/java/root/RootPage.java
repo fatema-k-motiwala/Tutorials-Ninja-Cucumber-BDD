@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import pages.HeaderOptions;
 import pages.RightColumnOptions;
 import utils.ElementUtilities;
 
@@ -30,6 +31,8 @@ public class RootPage {
 		return new RightColumnOptions(driver);	
 		}
 
-
+	public HeaderOptions getHeaderOptions() {
+		return new HeaderOptions(driver);	
+		}
 
 }
