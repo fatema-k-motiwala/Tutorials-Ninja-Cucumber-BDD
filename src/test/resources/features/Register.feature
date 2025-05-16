@@ -10,7 +10,7 @@ When User enters below fields
 And User selects Privacy Policy Field
 And User clicks on Continue button
 Then User account should get logged in
-And User should be taken to Account Sucess Page
+And User should be taken to Account Success Page
 And Proper details should be displayed on the Account Sucess Page
 When User clicks on Continue button on Account Sucess Page
 Then User should be navigated to My Account Page
@@ -26,7 +26,7 @@ And User selects Yes option for Newsletter
 And User selects Privacy Policy Field
 And User clicks on Continue button
 Then User account should get logged in
-And User should be taken to Account Sucess Page
+And User should be taken to Account Success Page
 
 Scenario: Verify Warning Messages on Registering Account without filling mandatory fields
 Given User navigates to Register Account Page
@@ -139,7 +139,7 @@ When User fills all the below fields using keyboard keys
 And User selects newsletter and privacy policy field using keyboard keys
 And User selects Continue button also using keyboard
 Then User account should get logged in
-And User should be taken to Account Sucess Page
+And User should be taken to Account Success Page
 
 Scenario: Verify all the fields in the Register Account page have proper placeholders
 Given User opens Application URL in the browser
@@ -176,22 +176,84 @@ Examples:
 |abcd123$ |
 |ABCD456! |
 
-@trynow
-@arun
 Scenario: Verify fields in the Register Account page are according to the Client Requirements
 Given User opens Application URL in the browser
 And User navigates to Register Account Page
 Then All the fields in the Register Account page are designed according to the Client Requirements
 
+Scenario: Verify leading and trailing spaces entered while registering account are trimmed
+Given User navigates to Register Account Page
+When User enters below fields with leading and trailing spaces
+|firstname 	|       Fatema		  |
+|lastname 	|       Motiwala	  |
+|telephone 	|       1234567890	|
+|password 	|12345		|
+And User selects Privacy Policy Field
+And User clicks on Continue button
+And User should be taken to Account Success Page
+Then Leading and trailing spaces entered into the fields should get trimmed
 
+Scenario: Verify Privacy Policy field is not selected by default
+Given User opens Application URL in the browser
+When User navigates to Register Account Page
+Then Privacy Policy field should not be selected by defaultl
 
+Scenario: Verify Registering Account without selecting Privacy Policy Field
+Given User navigates to Register Account Page
+When User enters below fields
+|firstname 	|Fatema		|
+|lastname 	|Motiwala	|
+|telephone 	|1234567890	|
+|password 	|12345		|
+And User clicks on Continue button
+Then Proper warning messages should be displayed for selecting Privacy Policy
 
+Scenario: Verify Password entered into the passwords fields is toggled to hide its visibility
+Given User opens Application URL in the browser
+When User navigates to Register Account Page
+Then Password text in password fields is toggled to hide its visibility
 
+Scenario: Verify navigating to other pages from Register
+Given User opens Application URL in the browser
+When User navigates to Register Account Page
+Then User should be able to navigate to other pages from Register Account page
 
+Scenario: Verify registering account by not filling password confirm field
+Given User navigates to Register Account Page
+When User enters below fields except password field
+|firstname 	|Fatema		|
+|lastname 	|Motiwala	|
+|telephone 	|1234567890	|
+And User enters password only into the Password but not into the password confirm field
+And User selects Privacy Policy Field
+And User clicks on Continue button
+Then Proper warning messages about password mismatch should displayed
 
+Scenario: Verify Register Account Page Breadcrumb URL Title and Heading
+Given User opens Application URL in the browser
+When User navigates to Register Account Page
+Then ProperPage Breadcrumb URL Title and Heading for register account page should be displayed
 
+Scenario: Verify UI of Register Account page
+Given User opens Application URL in the browser
+When User navigates to Register Account Page
+Then Proper UI for Register Account page should be displayed
 
-
+@trynow
+Scenario: Verify Register Account functionality in all supported environments
+Given User navigates to Register Account Page
+When User enters below fields
+|firstname 	|Fatema		|
+|lastname 	|Motiwala	|
+|telephone 	|1234567890	|
+|password 	|12345		|
+And User selects Privacy Policy Field
+And User clicks on Continue button
+Then User account should get logged in
+And User should be taken to Account Success Page
+And Proper details should be displayed on the Account Sucess Page
+When User clicks on Continue button on Account Sucess Page
+Then User should be navigated to My Account Page
 
 
 

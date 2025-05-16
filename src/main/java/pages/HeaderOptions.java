@@ -69,12 +69,38 @@ public class HeaderOptions extends RootPage {
 		elementUtilities.clickOnElement(myAccountOption);
 		return new MyAccountPage(driver);
 	}
+	public ContactUsPage selectPhoneIcon() {
+		elementUtilities.clickOnElement(phoneIcon);
+		return new ContactUsPage(driver);
+	}
 	
+	public ShoppingCartPage selectshoppingCartHeaderIcon() {
+		elementUtilities.clickOnElement(shoppingCartHeaderIcon);
+		return new ShoppingCartPage(driver);
+	}
 
 	public void enterProductIntoSearchBoxField(String product) {
 		elementUtilities.enterTextIntoElement(searchBox, product);
 	}
 
+	public ShoppingCartPage selectcheckoutOption() {
+		elementUtilities.clickOnElement(checkoutOption);
+		return new ShoppingCartPage(driver);
+	}
+
+	public ShoppingCartPage selectshoppingCartHeaderOption() {
+		elementUtilities.clickOnElement(shoppingCartHeaderOption);
+		return new ShoppingCartPage(driver);
+	}
+	public ShoppingCartPage selectcheckoutIcon() {
+		elementUtilities.clickOnElement(checkoutIcon);
+		return new ShoppingCartPage(driver);
+	}
+
+	public SearchPage selectSearchButton() {
+		elementUtilities.clickOnElement(searchButton);
+		return new SearchPage(driver);
+	}
 	public boolean isSearchBoxFieldDisplayed() {
 		return elementUtilities.isElementDisplayed(searchBox);
 	}
@@ -133,5 +159,11 @@ public class HeaderOptions extends RootPage {
 		return selectLoginOption();
 	}
 
+	public LoginPage selectWishList() {
+		elementUtilities.clickOnElement(wishList);
+		return new LoginPage(driver);
+	}
 
+	
+	
 }

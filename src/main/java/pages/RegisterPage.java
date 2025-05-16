@@ -26,6 +26,9 @@ public class RegisterPage extends RootPage {
 	@FindBy(id = "input-email")
 	private WebElement email;
 
+	@FindBy(linkText = "login page")
+	private WebElement loginPageOption;
+
 	@FindBy(id = "input-telephone")
 	private WebElement telephone;
 
@@ -264,6 +267,16 @@ public class RegisterPage extends RootPage {
 
 	}
 
+	public LoginPage selectLoginPageOption() {
+		elementUtilities.clickOnElement(loginPageOption);
+		return new LoginPage(driver);
+	}
+	
+	public RegisterPage selectRegisterPageBreadcrumb() {
+		elementUtilities.clickOnElement(registerPageBreadcrumb);
+		return new RegisterPage(driver);
+	}
+
 	public String getPasswordConfirmCSSValue(String propertyName) {
 		return elementUtilities.getElementCSSValue(confirmPassword, propertyName);
 	}
@@ -284,6 +297,9 @@ public class RegisterPage extends RootPage {
 		return elementUtilities.getElementCSSValue(email, propertyName);
 	}
 
+	public Boolean isPrivacyPolicySelected() {
+		return elementUtilities.isElementSelected(privacyPolicy);
+	}
 
 
 	

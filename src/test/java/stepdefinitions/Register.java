@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 
+import org.assertj.core.api.SoftAssertions;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -13,7 +14,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.io.FileHandler;
 
 import factory.DriverFactory;
@@ -23,54 +23,40 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pages.AccountSuccessPage;
-import pages.HeaderOptions;
 import pages.HomePage;
-import pages.LoginPage;
-import pages.MyAccountPage;
-import pages.NewsLetterPage;
-import pages.RegisterPage;
-import pages.RightColumnOptions;
 import stepdefinitions.base.Base;
 import utils.CommonUtils;
 
-public class Register extends Base{
+public class Register extends Base {
 
 	WebDriver driver;
 	Properties prop;
-	HomePage homepage;
-	RegisterPage registerPage;
-	AccountSuccessPage accountSuccessPage;
-	MyAccountPage myAccountPage;
-	NewsLetterPage newsLetterPage;
-	LoginPage loginPage;
-	RightColumnOptions rightColumnOptions;
-	Actions actions ;
-	HeaderOptions headerOptions;
-	
+	String emailText = "";
+
 	@Given("User navigates to Register Account Page")
 	public void user_navigates_to_register_account_page() {
 		driver = DriverFactory.getDriver();
 		prop = CommonUtils.loadPropertiesFile();
-		homepage = new HomePage(driver);
-		homepage.clickOnmyAccountDropMenu();
-		registerPage = homepage.selectRegisterOption();
+		homePage = new HomePage(driver);
+		homePage.clickOnmyAccountDropMenu();
+		registerPage = homePage.selectRegisterOption();
 	}
 
 	@Given("User opens Application URL in the browser")
 	public void user_opens_application_url_in_the_browser() {
 		driver = DriverFactory.getDriver();
 		prop = CommonUtils.loadPropertiesFile();
-		homepage = new HomePage(driver);
+		homePage = new HomePage(driver);
 	}
 
 	@When("User clicks on My Account dropmenu")
 	public void user_clicks_on_my_account_dropmenu() {
-		homepage.clickOnmyAccountDropMenu();
+		homePage.clickOnmyAccountDropMenu();
 	}
 
 	@When("User selects Register option")
 	public void user_selects_register_option() {
-		registerPage = homepage.selectRegisterOption();
+		registerPage = homePage.selectRegisterOption();
 	}
 
 	@Then("User should be navigated to Register Account page")
@@ -116,8 +102,8 @@ public class Register extends Base{
 		Assert.assertTrue(accountSuccessPage.isUserLoggedIn());
 	}
 
-	@And("User should be taken to Account Sucess Page")
-	public void user_should_be_taken_to_account_sucess_page() {
+	@And("User should be taken to Account Success Page")
+	public void user_should_be_taken_to_account_success_page() {
 		Assert.assertTrue(accountSuccessPage.didWeNavigateToAccountSuccessPage());
 	}
 
@@ -182,7 +168,7 @@ public class Register extends Base{
 
 	@And("User selects Login option")
 	public void user_selects_login_option() {
-		loginPage = homepage.selectLoginOption();
+		loginPage = homePage.selectLoginOption();
 	}
 
 	@When("User clicks on Continue button on Login Page")
@@ -287,23 +273,25 @@ public class Register extends Base{
 		actions = typeTextUsingActions(actions, map.get("password"));
 		actions = clickKeyboradKeyMultipleTimes(actions, Keys.TAB, 1);
 		actions = typeTextUsingActions(actions, map.get("password"));
-	
+
 	}
+
 	@When("User selects newsletter and privacy policy field using keyboard keys")
 	public void user_selects_newsletter_and_privacy_policy_field_using_keyboard_keys() {
 		actions = clickKeyboradKeyMultipleTimes(actions, Keys.TAB, 1);
 		actions = clickKeyboradKeyMultipleTimes(actions, Keys.ARROW_LEFT, 1);
 		actions = clickKeyboradKeyMultipleTimes(actions, Keys.TAB, 2);
 		actions = clickKeyboradKeyMultipleTimes(actions, Keys.SPACE, 1);
- 
+
 	}
+
 	@When("User selects Continue button also using keyboard")
 	public void user_selects_continue_button_also_using_keyboard() {
 		actions = clickKeyboradKeyMultipleTimes(actions, Keys.TAB, 1);
 		actions = clickKeyboradKeyMultipleTimes(actions, Keys.ENTER, 1);
 		accountSuccessPage = new AccountSuccessPage(driver);
 	}
-	
+
 	@Then("Proper Placeholder texts should be displayed for all the text fields")
 	public void proper_placeholder_texts_should_be_displayed_for_all_the_text_fields() {
 		Assert.assertEquals(registerPage.getFirstNamePlaceHolderText(), "First Name");
@@ -394,7 +382,7 @@ public class Register extends Base{
 		registerPage.enterPassword("     ");
 		registerPage.enterConfirmPassword("     ");
 	}
-	
+
 	@Then("Warning message should be displayed for these Mandatory fields")
 	public void warning_message_should_be_displayed_for_these_mandatory_fields() {
 		String browserName = (prop.getProperty("browserName"));
@@ -430,7 +418,7 @@ public class Register extends Base{
 		registerPage.enterConfirmPassword(password);
 		System.out.println(password);
 	}
-	
+
 	@Then("Proper Warning messages should be displayed about password complexity not being followed")
 	public void proper_warning_messages_should_be_displayed_about_password_complexity_not_being_followed() {
 
@@ -447,7 +435,8 @@ public class Register extends Base{
 	}
 
 	@Then("All the fields in the Register Account page are designed according to the Client Requirements")
-	public void all_the_fields_in_the_register_account_page_are_designed_according_to_the_client_requirements() throws IOException {
+	public void all_the_fields_in_the_register_account_page_are_designed_according_to_the_client_requirements()
+			throws IOException {
 		String expectedHeight = "34px";
 		String expectedWidth = "701.25px";
 
@@ -643,6 +632,288 @@ public class Register extends Base{
 				System.getProperty("user.dir") + "\\Screenshots\\AcutalRAPageAligment.png",
 				System.getProperty("user.dir") + "\\Screenshots\\ExpectedRAPageAligment.png"));
 
+	}
+
+	@When("User enters below fields with leading and trailing spaces")
+	public void user_enters_below_fields_with_leading_and_trailing_spaces(DataTable dataTable) {
+		Map<String, String> map = dataTable.asMap();
+		registerPage.enterFirstname("    " + map.get("firstname") + "    ");
+		registerPage.enterLastname("    " + map.get("lastname") + "    ");
+		emailText = "     " + CommonUtils.generateEmailWithNanoTime() + "     ";
+		registerPage.enterEmail(emailText);
+		registerPage.enterTelephone("    " + map.get("telephone") + "    ");
+		registerPage.enterPassword(map.get("password"));
+		registerPage.enterConfirmPassword(map.get("password"));
+	}
+
+	@Then("Leading and trailing spaces entered into the fields should get trimmed")
+	public void leading_and_trailing_spaces_entered_into_the_fields_should_get_trimmed() {
+
+		SoftAssertions softly = new SoftAssertions();
+
+		String browserName = prop.getProperty("browserName");
+
+		if (browserName.equalsIgnoreCase("chrome") || browserName.equalsIgnoreCase("edge")) {
+			myAccountPage = accountSuccessPage.clickOnContinueButton();
+			myAccountInformationPage = myAccountPage.clickOnEditYourAccountInformation();
+
+			softly.assertThat(myAccountInformationPage.getFirstNameDomAttribute("value"))
+					.isEqualTo(prop.getProperty("firstname"));
+
+			softly.assertThat(myAccountInformationPage.getLastnameDomAttribute("value"))
+					.isEqualTo(prop.getProperty("lastname"));
+
+			softly.assertThat(myAccountInformationPage.getEmailDomAttribute("value")).isEqualTo(emailText.trim());
+
+			softly.assertThat(myAccountInformationPage.getTelephoneDomAttribute("value"))
+					.isEqualTo(prop.getProperty("telephoneNumber"));
+
+			softly.assertAll(); // triggers all collected assertions
+		} else if (browserName.equalsIgnoreCase("firefox")) {
+			Assert.assertEquals(myAccountInformationPage.getEmailDomProperty("validationMessage"),
+					"Please enter an email address.");
+		}
+
+	}
+
+	@Then("Privacy Policy field should not be selected by defaultl")
+	public void privacy_policy_field_should_not_be_selected_by_defaultl() {
+
+		Assert.assertFalse(registerPage.isPrivacyPolicySelected());
+	}
+	
+	
+	@Then("Proper warning messages should be displayed for selecting Privacy Policy")
+	public void proper_warning_messages_should_be_displayed_for_selecting_Privacy_Policy() {
+		Assert.assertEquals(registerPage.getPageLevelWarning(), "Warning: You must agree to the Privacy Policy!");
+	}
+
+
+	@Then("Password text in password fields is toggled to hide its visibility")
+	public void password_text_in_password_fields_is_toggled_to_hide_its_visibility() {
+		Assert.assertEquals(registerPage.getPasswordDomAttribute("type"), "password");
+		Assert.assertEquals(registerPage.getConfirmPasswordDomAttribute("type"), "password");
+	}
+
+	@Then("User should be able to navigate to other pages from Register Account page")
+	public void user_should_be_able_to_navigate_to_other_pages_from_register_account_page() {
+
+		headerOptions = registerPage.getHeaderOptions();
+		contactUsPage = headerOptions.selectPhoneIcon();
+		Assert.assertTrue(getPageTitle(contactUsPage.getDriver()).equals("Contact Us"));
+		navigateBackInBrowser(contactUsPage.getDriver());
+
+		loginPage = headerOptions.selectHeartIcon();
+		Assert.assertEquals(getPageTitle(headerOptions.getDriver()), "Account Login");
+		navigateBackInBrowser(headerOptions.getDriver());
+
+		loginPage = headerOptions.selectWishList();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+		shoppingCartPage = headerOptions.selectshoppingCartHeaderIcon();
+		Assert.assertEquals(getPageTitle(shoppingCartPage.getDriver()), "Shopping Cart");
+		navigateBackInBrowser(shoppingCartPage.getDriver());
+
+		shoppingCartPage = headerOptions.selectshoppingCartHeaderOption();
+		Assert.assertEquals(getPageTitle(shoppingCartPage.getDriver()), "Shopping Cart");
+		navigateBackInBrowser(shoppingCartPage.getDriver());
+
+		shoppingCartPage = headerOptions.selectcheckoutIcon();
+		Assert.assertEquals(getPageTitle(shoppingCartPage.getDriver()), "Shopping Cart");
+		navigateBackInBrowser(shoppingCartPage.getDriver());
+
+		shoppingCartPage = headerOptions.selectcheckoutOption();
+		Assert.assertEquals(getPageTitle(shoppingCartPage.getDriver()), "Shopping Cart");
+		navigateBackInBrowser(shoppingCartPage.getDriver());
+
+		homePage = headerOptions.selectLogo();
+		Assert.assertEquals(getPageTitle(homePage.getDriver()), "Your Store");
+		navigateBackInBrowser(homePage.getDriver());
+
+		searchPage = headerOptions.selectSearchButton();
+		Assert.assertEquals(getPageTitle(searchPage.getDriver()), "Search");
+		navigateBackInBrowser(searchPage.getDriver());
+
+//		homePage = headerOptions.selectHomeBreadcrumb();
+//		Assert.assertEquals(getPageTitle(homePage.getDriver()), "Your Store");
+//		navigateBackInBrowser(homePage.getDriver());
+
+		loginPage = headerOptions.selectAccountBreadcrumb();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+		registerPage = registerPage.selectRegisterPageBreadcrumb();
+		Assert.assertEquals(getPageTitle(registerPage.getDriver()), "Register Account");
+
+		loginPage = registerPage.selectLoginPageOption();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+		rightColumnOptions = loginPage.getRightColumnOptions();
+
+		loginPage = rightColumnOptions.clickOnLoginOption();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+		registerPage = rightColumnOptions.clickOnRegisterOption();
+		Assert.assertEquals(getPageTitle(registerPage.getDriver()), "Register Account");
+
+		forgotYourPasswordPage = rightColumnOptions.clickOnForgotYourPassword();
+		Assert.assertEquals(getPageTitle(forgotYourPasswordPage.getDriver()), "Forgot Your Password?");
+		navigateBackInBrowser(forgotYourPasswordPage.getDriver());
+
+		loginPage = rightColumnOptions.clickOnMyAccountOption();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+		loginPage = rightColumnOptions.clickOnAddressBookOption();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+		loginPage = rightColumnOptions.clickOnWishListOption();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+		loginPage = rightColumnOptions.clickOnOrderHistoryOption();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+		loginPage = rightColumnOptions.clickOnDownloadsOption();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+		loginPage = rightColumnOptions.clickOnRecurringPaymentsOption();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+		loginPage = rightColumnOptions.clickOnRewardsPointsOption();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+		loginPage = rightColumnOptions.clickOnReturnsOption();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+		loginPage = rightColumnOptions.clickOnTransactionsOption();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+		loginPage = rightColumnOptions.clickOnNewsletterOption();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+		footerOptionsPage = loginPage.getFooterOptionsPage();
+
+		aboutUsPage = footerOptionsPage.clickOnAboutUs();
+		Assert.assertEquals(getPageTitle(aboutUsPage.getDriver()), "About Us");
+		navigateBackInBrowser(aboutUsPage.getDriver());
+
+		deliveryInformationPage = footerOptionsPage.clickOnDeliveryInformation();
+		Assert.assertEquals(getPageTitle(deliveryInformationPage.getDriver()), "Delivery Information");
+		navigateBackInBrowser(deliveryInformationPage.getDriver());
+
+		privacyPolicyPage = footerOptionsPage.clickOnPrivacyPolicy();
+		Assert.assertEquals(getPageTitle(privacyPolicyPage.getDriver()), "Privacy Policy");
+		navigateBackInBrowser(privacyPolicyPage.getDriver());
+
+		termsConditionsPage = footerOptionsPage.clickOnTermsConditions();
+		Assert.assertEquals(getPageTitle(termsConditionsPage.getDriver()), "Terms & Conditions");
+		navigateBackInBrowser(termsConditionsPage.getDriver());
+
+		contactUsPage = footerOptionsPage.clickOnContactUs();
+		Assert.assertEquals(getPageTitle(contactUsPage.getDriver()), "Contact Us");
+		navigateBackInBrowser(contactUsPage.getDriver());
+
+		returnsPage = footerOptionsPage.clickOnReturns();
+		Assert.assertEquals(getPageTitle(returnsPage.getDriver()), "Product Returns");
+		navigateBackInBrowser(returnsPage.getDriver());
+
+		siteMapPage = footerOptionsPage.clickOnSiteMap();
+		Assert.assertEquals(getPageTitle(siteMapPage.getDriver()), "Site Map");
+		navigateBackInBrowser(siteMapPage.getDriver());
+
+		brandsPage = footerOptionsPage.clickOnBrands();
+		Assert.assertEquals(getPageTitle(brandsPage.getDriver()), "Find Your Favorite Brand");
+		navigateBackInBrowser(brandsPage.getDriver());
+
+		giftCertificatePage = footerOptionsPage.clickOnGiftCertificate();
+		Assert.assertEquals(getPageTitle(giftCertificatePage.getDriver()), "Purchase a Gift Certificate");
+		navigateBackInBrowser(giftCertificatePage.getDriver());
+
+		affiliatePage = footerOptionsPage.clickOnAffiliate();
+		Assert.assertEquals(getPageTitle(affiliatePage.getDriver()), "Affiliate Program");
+		navigateBackInBrowser(affiliatePage.getDriver());
+
+		specialsPage = footerOptionsPage.clickOnSpecials();
+		Assert.assertEquals(getPageTitle(specialsPage.getDriver()), "Special Offers");
+		navigateBackInBrowser(specialsPage.getDriver());
+
+		loginPage = footerOptionsPage.clickOnMyAccount();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+		loginPage = footerOptionsPage.clickOnOrderHistory();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+		loginPage = footerOptionsPage.clickOnWishList();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+		loginPage = footerOptionsPage.clickOnNewsletter();
+		Assert.assertEquals(getPageTitle(loginPage.getDriver()), "Account Login");
+		navigateBackInBrowser(loginPage.getDriver());
+
+	}
+
+	@When("User enters password only into the Password but not into the password confirm field")
+	public void user_enters_password_only_into_the_password_but_not_into_the_password_confirm_field() {
+		registerPage.enterPassword(prop.getProperty("validPassword"));
+
+	}
+	
+	@Then("Proper warning messages about password mismatch should displayed")
+	public void proper_warning_messages_about_password_mismatch_should_displayed() {
+		Assert.assertEquals(registerPage.getPasswordConfirmationWarning(),
+				"Password confirmation does not match password!");
+
+	}
+
+	@Then("ProperPage Breadcrumb URL Title and Heading for register account page should be displayed")
+	public void proper_page_breadcrumb_url_title_and_heading_for_register_account_page_should_be_displayed() {
+		Assert.assertEquals(getPageTitle(registerPage.getDriver()), "Register Account");
+		Assert.assertEquals(getBaseURL()+prop.getProperty("registerPageURL"),getPageURL(registerPage.getDriver()));
+		Assert.assertTrue(registerPage.didWeNavigatetoRegisterpage());
+		Assert.assertEquals("Register Account", registerPage.getPageHeading());
+
+	}
+
+	@Then("Proper UI for Register Account page should be displayed")
+	public void proper_Ui_for_register_account_page_should_be_displayed() throws IOException {
+		String browserName = prop.getProperty("browserName");
+		if (browserName.equalsIgnoreCase("chrome")){
+			CommonUtils.takeScreenshot(driver,
+					System.getProperty("user.dir") + "\\Screenshots\\actualRAPageUI.png");
+			Assert.assertFalse(CommonUtils.compareTwoScreenshots(
+					System.getProperty("user.dir") + "\\Screenshots\\actualRAPageUI.png",
+					System.getProperty("user.dir") + "\\Screenshots\\expectedRAPageUI.png"));
+		} else if (browserName.equalsIgnoreCase("firefox")) {
+			CommonUtils.takeScreenshot(driver,
+					System.getProperty("user.dir") + "\\Screenshots\\actualFirefoxRAPageUI.png");
+			Assert.assertFalse(CommonUtils.compareTwoScreenshots(
+					System.getProperty("user.dir") + "\\Screenshots\\actualFirefoxRAPageUI.png",
+					System.getProperty("user.dir") + "\\Screenshots\\expectedFirefoxRAPageUI.png"));
+
+		} else if (browserName.equalsIgnoreCase("edge")) {
+			CommonUtils.takeScreenshot(driver,
+					System.getProperty("user.dir") + "\\Screenshots\\actualEdgeRAPageUI.png");
+			Assert.assertFalse(CommonUtils.compareTwoScreenshots(
+					System.getProperty("user.dir") + "\\Screenshots\\actualEdgeRAPageUI.png",
+					System.getProperty("user.dir") + "\\Screenshots\\expectedEdgeRAPageUI.png"));}
+		
+
+		
 
 	}
 
@@ -655,7 +926,10 @@ public class Register extends Base{
 
 
 
-	
-	
-	
+
+
+
+
+
+
 }

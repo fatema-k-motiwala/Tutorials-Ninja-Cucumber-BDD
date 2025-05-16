@@ -8,10 +8,19 @@ import java.util.Properties;
 
 import javax.imageio.ImageIO;
 
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.io.FileHandler;
+
 import ru.yandex.qatools.ashot.comparison.ImageDiff;
 import ru.yandex.qatools.ashot.comparison.ImageDiffer;
 
 public class CommonUtils {
+	
+	public static final int MIN_TIME = 3;
+	public static final int AVERAGE_TIME = 10;
+	public static final int MAX_TIME = 30;
 
 	public static String generateEmailWithNanoTime() {
 		long nanoTime = System.nanoTime();
@@ -38,4 +47,18 @@ public class CommonUtils {
 		ImageDiff imageDiff = differ.makeDiff(bufferedExpectedImage, bufferedActualImage);
 		return imageDiff.hasDiff();
 	}
+
+	public static void takeScreenshot(WebDriver driver, String screenshotPath) {
+
+		TakesScreenshot ts = (TakesScreenshot) driver;
+
+		File srcScreenshot = ts.getScreenshotAs(OutputType.FILE);
+
+		try {
+			FileHandler.copy(srcScreenshot, new File(screenshotPath));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
