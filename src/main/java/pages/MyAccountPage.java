@@ -23,6 +23,9 @@ public class MyAccountPage extends RootPage {
 	@FindBy(linkText = "Subscribe / unsubscribe to newsletter")
 	private WebElement subscribeUnsubscribeToNewsletterOption;
 
+	@FindBy(linkText = "Change your password")
+	private WebElement changeYourPasswordOption;
+
 
 	public NewsLetterPage clickOnSubscribeUnsubscribeToNewsletterOption() {
 		elementUtilities.clickOnElement(subscribeUnsubscribeToNewsletterOption);
@@ -37,6 +40,11 @@ public class MyAccountPage extends RootPage {
 		elementUtilities.clickOnElement(editYourAccountInformation);
 		return new MyAccountInformationPage(driver);
 	}
+	public ChangePasswordPage clickOnChangeYourPasswordOption() {
+		elementUtilities.clickOnElement(changeYourPasswordOption);
+		return new ChangePasswordPage(driver);
+	}
+	
 
 
 }

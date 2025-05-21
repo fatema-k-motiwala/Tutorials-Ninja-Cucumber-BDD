@@ -3,6 +3,7 @@ package utils;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -38,6 +39,17 @@ public class CommonUtils {
 		}
 	return prop;
 	}
+	
+	public static Properties storePropertiesFile(Properties prop) {
+	    String path = System.getProperty("user.dir") + "\\src\\test\\resources\\config\\ProjectConfig.properties";
+	    try (FileWriter fw = new FileWriter(path)) {
+	        prop.store(fw, "Updated Properties file");
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return prop;
+	}
+
 
 	public static boolean compareTwoScreenshots(String actualImagePath, String expectedImagePath) throws IOException {
 

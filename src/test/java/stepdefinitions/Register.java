@@ -33,15 +33,6 @@ public class Register extends Base {
 	Properties prop;
 	String emailText = "";
 
-	@Given("User navigates to Register Account Page")
-	public void user_navigates_to_register_account_page() {
-		driver = DriverFactory.getDriver();
-		prop = CommonUtils.loadPropertiesFile();
-		homePage = new HomePage(driver);
-		homePage.clickOnmyAccountDropMenu();
-		registerPage = homePage.selectRegisterOption();
-	}
-
 	@Given("User opens Application URL in the browser")
 	public void user_opens_application_url_in_the_browser() {
 		driver = DriverFactory.getDriver();
@@ -56,6 +47,15 @@ public class Register extends Base {
 
 	@When("User selects Register option")
 	public void user_selects_register_option() {
+		registerPage = homePage.selectRegisterOption();
+	}
+
+	@Given("User navigates to Register Account Page")
+	public void user_navigates_to_register_account_page() {
+		driver = DriverFactory.getDriver();
+		prop = CommonUtils.loadPropertiesFile();
+		homePage = new HomePage(driver);
+		homePage.clickOnmyAccountDropMenu();
 		registerPage = homePage.selectRegisterOption();
 	}
 

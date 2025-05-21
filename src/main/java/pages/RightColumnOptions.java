@@ -73,10 +73,10 @@ public class RightColumnOptions extends RootPage {
 		return elementUtilities.isElementDisplayed(logoutOption);
 	}
 	
-//	public AccountLogoutPage clickOnLogoutOption() {
-//		elementUtilities.clickOnElement(logoutOption);
-//		return new AccountLogoutPage(driver);
-//	}
+	public AccountLogoutPage clickOnLogoutOption() {
+		elementUtilities.clickOnElement(logoutOption);
+		return new AccountLogoutPage(driver);
+	}
 
 	public LoginPage clickOnLoginOption() {
 		elementUtilities.clickOnElement(loginOption);

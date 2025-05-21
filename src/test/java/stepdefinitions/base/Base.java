@@ -7,9 +7,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 
 import pages.AboutUsPage;
+import pages.AccountLogoutPage;
 import pages.AccountSuccessPage;
 import pages.AffiliatePage;
 import pages.BrandsPage;
+import pages.ChangePasswordPage;
 import pages.ContactUsPage;
 import pages.DeliveryInformationPage;
 import pages.FooterOptionsPage;
@@ -33,6 +35,7 @@ import pages.TermsConditionsPage;
 import utils.CommonUtils;
 
 public class Base {
+	public WebDriver driver;
 	public Properties prop;
 	public HomePage homePage;
 	public RegisterPage registerPage;
@@ -59,9 +62,25 @@ public class Base {
 	public GiftCertificatePage giftCertificatePage;
 	public SiteMapPage siteMapPage;
 	public SpecialsPage specialsPage;
+	public ChangePasswordPage changePasswordPage;
+	public AccountLogoutPage accountLogoutPage;
+
 	
 	public Actions getActions(WebDriver driver) {
 		return new Actions(driver);
+	}
+	
+	public Properties swapPasswords(Properties prop) {
+		String oldPassword = prop.getProperty("validPasswordTwo");
+		String newPassword = prop.getProperty("validPasswordThree");
+		prop.setProperty("validPasswordTwo", newPassword);
+		prop.setProperty("validPasswordThree", oldPassword);
+	    prop = CommonUtils.storePropertiesFile(prop);
+	    return prop;
+	}
+	
+	public String getPageSourceCode(WebDriver driver) {
+		return driver.getPageSource();
 	}
 
 	public Actions clickKeyboradKeyMultipleTimes(Actions actions, Keys keyName, int noOfTimes) {
@@ -92,7 +111,13 @@ public class Base {
 	public String getPageURL(WebDriver driver) {
 		return driver.getCurrentUrl();
 	}
+
 	
+	public void refreshPage(WebDriver driver) {
+		driver.navigate().refresh();
+	}
+
+
 
 }
 

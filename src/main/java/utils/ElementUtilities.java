@@ -2,15 +2,17 @@ package utils;
 
 import java.time.Duration;
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ElementUtilities {
 
 	WebDriver driver;
-//		Actions actions;
+		Actions actions;
 //		Select select;
 
 	public ElementUtilities(WebDriver driver) {
@@ -83,5 +85,20 @@ public class ElementUtilities {
 	
 	public String getElementDomProperty(WebElement element, String attributeName) {
 		return element.getDomProperty(attributeName);
+	}
+
+	public Actions getActions(WebDriver driver) {
+		Actions actions = new Actions(driver);
+		return actions;
+	}
+	
+	public void copyTextUsingKeyboardKeys(WebDriver driver) {
+		actions = getActions(driver);
+		actions.keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL).keyDown(Keys.CONTROL).sendKeys("c").keyUp(Keys.CONTROL).build().perform();
+	}
+	
+	public void pasteTextUsingKeyboardKeys(WebDriver driver, WebElement element) {
+		actions = getActions(driver);
+		actions.click(element).keyDown(Keys.CONTROL).sendKeys("v").keyUp(Keys.CONTROL).build().perform();	
 	}
 }
