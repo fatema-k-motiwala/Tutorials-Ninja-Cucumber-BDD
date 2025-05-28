@@ -103,19 +103,19 @@ public class SearchPage extends RootPage {
 		elementUtilities.clickOnElement(gridOption);
 	}
 
-//	public ProductDisplayPage clickOnProductOneImage() {
-//		elementUtilities.clickOnElement(productOneImage);
-//		return new ProductDisplayPage(driver);
-//	}
+	public ProductDisplayPage clickOnProductOneImage() {
+		elementUtilities.clickOnElement(productOneImage);
+		return new ProductDisplayPage(driver);
+	}
 
 	public void clickOnCompareThisProductOption() {
 		elementUtilities.clickOnElement(compareThisProductOption);
 	}
-//
-//	public ProductDisplayPage clickOnProductOneName() {
-//		elementUtilities.clickOnElement(productOneName);
-//		return new ProductDisplayPage(driver);
-//	}
+
+	public ProductDisplayPage clickOnProductOneName() {
+		elementUtilities.clickOnElement(productOneName);
+		return new ProductDisplayPage(driver);
+	}
 
 	public void clickOnAddToWishListOption() {
 		elementUtilities.clickOnElement(addToWishListOption);
@@ -129,13 +129,13 @@ public class SearchPage extends RootPage {
 		elementUtilities.clickOnElement(listOption);
 	}
 //
-//	public void selectOptionFromCategoryIdUsingIndex(int optionIndex) {
-//		elementUtilities.selectOptionFromDropdownFieldUsingIndex(categoryId, optionIndex);
-//	}
-//
-//	public void selectOptionFromCategoryIdUsingText(String optionText) {
-//		elementUtilities.selectOptionFromDropdownFieldUsingText(categoryId, optionText);
-//	}
+	public void selectOptionFromCategoryIdUsingIndex(int optionIndex) {
+		elementUtilities.selectOptionFromDropdownFieldUsingIndex(categoryId, optionIndex);
+	}
+
+	public void selectOptionFromCategoryIdUsingText(String optionText) {
+		elementUtilities.selectOptionFromDropdownFieldUsingText(categoryId, optionText);
+	}
 
 	public void clickOnSubCategoryIdCheckBox() {
 		elementUtilities.clickOnElement(subCategoryIdCheckBox);
@@ -157,9 +157,9 @@ public class SearchPage extends RootPage {
 		return elementUtilities.getElementDomAttribute(searchCriteriaBox, "placeholder");
 	}
 
-//	public int getProductCount() {
-//		return elementUtilities.getElementsCount(productThumbnail);
-//	}
+	public int getProductCount() {
+		return elementUtilities.getElementsCount(productThumbnail);
+	}
 
 	public String getNoProductMessage() {
 		return elementUtilities.getElementText(noProductMessage);

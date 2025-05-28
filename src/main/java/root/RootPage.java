@@ -34,7 +34,14 @@ public class RootPage {
 
 	@FindBy(xpath="//div[@id='content']/h1")
 	private WebElement pageHeading;
+	
+	@FindBy(xpath = "//div[@class='alert alert-success alert-dismissible']")	                  
+	private WebElement pageLevelSuccess;
 
+	
+	public String getPageLevelSuccess() {
+		return elementUtilities.getElementText(pageLevelSuccess);
+	}
 	
 	public String getPageHeading()
 	{

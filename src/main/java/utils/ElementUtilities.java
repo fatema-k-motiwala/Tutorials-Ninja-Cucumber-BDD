@@ -1,19 +1,21 @@
 package utils;
 
 import java.time.Duration;
+import java.util.List;
 
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ElementUtilities {
 
 	WebDriver driver;
 		Actions actions;
-//		Select select;
+		Select select;
 
 	public ElementUtilities(WebDriver driver) {
 		this.driver = driver;
@@ -25,6 +27,17 @@ public class ElementUtilities {
 			b = element.isSelected();
 		}
 		return b;
+	}
+	
+	public int getElementsCount(List<WebElement> elements)
+	{
+		int count = 0;
+		try {
+			count= elements.size();		
+		} catch (Exception e) {
+			count = 0;
+		}
+		return count;
 	}
 	
 	public void waitForElement(WebElement element, int seconds) {
@@ -47,6 +60,34 @@ public class ElementUtilities {
 		}
 	}
 
+	public void selectOptionFromDropdownFieldUsingIndex(WebElement element, int optionIndex)
+	{
+		if (isElementDisplayed(element) && element.isEnabled()) {
+			select = new Select(element);
+			select.selectByIndex(optionIndex);
+		}
+	}
+	
+	public boolean waitAndCheckElementDisplayStatus(WebElement element, int seconds) {
+		boolean b = false;
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+			wait.until(ExpectedConditions.visibilityOf(element));
+		    b = true;
+		}catch(Exception e) {
+			b = false;
+		}
+		return b;
+	}
+
+	public void selectOptionFromDropdownFieldUsingText(WebElement element, String optionText)
+	{
+		if (isElementDisplayed(element) && element.isEnabled()) {
+			select = new Select(element);
+			select.selectByVisibleText(optionText);
+		}
+	}
+	
 	public void enterTextIntoElement(WebElement element, String text) {
 		if (isElementDisplayed(element) && element.isEnabled() && element.getDomProperty("readonly") == null) {
 			element.clear();

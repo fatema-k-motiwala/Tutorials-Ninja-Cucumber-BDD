@@ -40,6 +40,10 @@ public class CommonUtils {
 	return prop;
 	}
 	
+	public static int convertToInteger(String text) {
+		return Integer.parseInt(text);
+	}
+	
 	public static Properties storePropertiesFile(Properties prop) {
 	    String path = System.getProperty("user.dir") + "\\src\\test\\resources\\config\\ProjectConfig.properties";
 	    try (FileWriter fw = new FileWriter(path)) {

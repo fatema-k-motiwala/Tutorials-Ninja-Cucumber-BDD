@@ -24,6 +24,7 @@ import pages.MyAccountInformationPage;
 import pages.MyAccountPage;
 import pages.NewsLetterPage;
 import pages.PrivacyPolicyPage;
+import pages.ProductDisplayPage;
 import pages.RegisterPage;
 import pages.ReturnsPage;
 import pages.RightColumnOptions;
@@ -64,7 +65,7 @@ public class Base {
 	public SpecialsPage specialsPage;
 	public ChangePasswordPage changePasswordPage;
 	public AccountLogoutPage accountLogoutPage;
-
+    public ProductDisplayPage productDisplayPage;
 	
 	public Actions getActions(WebDriver driver) {
 		return new Actions(driver);

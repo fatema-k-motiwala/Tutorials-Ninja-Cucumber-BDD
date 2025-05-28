@@ -107,27 +107,12 @@ When User clicks on My Account dropmenu from Home Page
 And User selects Login option from menu
 Then ProperPage Breadcrumb URL Title and Heading for login page should be displayed
 
-@trynow
 Scenario: Verify UI of Login page
 Given User opens Home Page
 When User clicks on My Account dropmenu from Home Page
 And User selects Login option from menu
 Then Proper UI for Login page should be displayed
 
-#Scenario: Verify Register Account functionality in all supported environments
-#Given User navigates to Register Account Page
-#When User enters below fields
-#|firstname 	|Fatema		|
-#|lastname 	|Motiwala	|
-#|telephone 	|1234567890	|
-#|password 	|12345		|
-#And User selects Privacy Policy Field
-#And User clicks on Continue button
-#Then User account should get logged in
-#And User should be taken to Account Success Page
-#And Proper details should be displayed on the Account Sucess Page
-#When User clicks on Continue button on Account Sucess Page
-#Then User should be navigated to My Account Page
 
 
 
