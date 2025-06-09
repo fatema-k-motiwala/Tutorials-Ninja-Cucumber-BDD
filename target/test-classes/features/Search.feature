@@ -104,7 +104,6 @@ And User clicks on List option
 Then Single Product should be displayed in the List view
 And All the Product options are working fine
 
-@trynow
 Scenario: Verify Gird View when only one Product is displayed in search results
 Given User is on the Home page
 When User enters search product into the Search box field
@@ -113,17 +112,75 @@ And User clicks on Grid option
 Then Single Product should be displayed in the Grid view
 And All the Product options are working fine in Grid view
 
+Scenario: Verify List View when multiple Products are displayed in search results
+Given User is on the Home page
+When User enters search product with multiple results into the Search box field 
+And User clicks on Search button
+And User clicks on List option
+Then Multiple Product should be displayed in the List view
 
+Scenario: Verify Grid View when multiple Products are displayed in search results
+Given User is on the Home page
+When User enters search product with multiple results into the Search box field 
+And User clicks on Search button
+And User clicks on Grid option
+Then Multiple Product should be displayed in the Grid view
+And All the Product options are working fine in Grid view
 
+Scenario: Verify navigating to Product Compare Page from Search Results Page
+Given User is on the Home page
+When User enters search product into the Search box field
+And User clicks on Search button
+And User clicks on Product Compare link
+Then User should be navigated to Product Compare page
 
+Scenario: Verify user is able to sort products in Search Results page
+Given User is on the Home page
+When User enters search product with multiple results into the Search box field 
+And User clicks on Search button
+Then Products should get sorted properly on selecting different sorting options
 
+Scenario: Verify user is able to limit the number of produts to be displayed in search results
+Given User is on the Home page
+When User enters search product with multiple results into the Search box field 
+And User clicks on Search button
+And User selects the number of products to be displayed in search results
+Then Selected number of products should be displayed in search results page 
 
+Scenario: Verify search box field and search button are displayed on all pages of application
+Given User is on the Home page
+When User navigates to all pages of application
+Then Search box field and search button should be displayed on all pages
 
+Scenario: Verify navigating to search page from sitemap page
+Given User is on the Home page
+When User navigates to sitemap page
+And User clicks on search option
+Then User should be navigated to search page
 
+Scenario: Verify breadcrumb option of Search page
+Given User is on the Home page
+When User enters existing product into the Search box field
+And User clicks on Search button
+Then Breadcrumb option on the search page should work correctly
 
+Scenario: Verify we can use all options of Search functionality using keyboard keys
+Given User is on the Home page
+When User does not enter any product into the Search box field
+And User clicks on Search button
+Then All the operations on the search page should be performed with the keyboard keys
 
+Scenario: Verify page heading, page url and page title of the search page
+Given User is on the Home page
+When User does not enter any product into the Search box field
+And User clicks on Search button
+Then Proper page heading, page url and page title should be displayed
 
-
+Scenario: Verify the UI of the Search page
+Given User is on the Home page
+When User does not enter any product into the Search box field
+And User clicks on Search button
+Then Proper UI should be displayed for the search functionality in search Page
 
 
 

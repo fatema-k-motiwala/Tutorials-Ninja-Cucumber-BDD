@@ -301,6 +301,16 @@ public class RegisterPage extends RootPage {
 		return elementUtilities.isElementSelected(privacyPolicy);
 	}
 
+	public AccountSuccessPage registeringAnAccount(String firstNameText,String lastNameText,String emailText,String telephoneText,String passwordText) {
+		enterFirstname(firstNameText);
+		enterLastname(lastNameText);
+		enterEmail(emailText);
+		enterTelephone(telephoneText);
+		enterPassword(passwordText);
+		enterConfirmPassword(passwordText);
+		selectprivacyPolicy();
+		return clickOnContinueButton();
+	}
 
 	
 }

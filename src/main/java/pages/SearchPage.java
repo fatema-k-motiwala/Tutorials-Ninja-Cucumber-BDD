@@ -8,6 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import root.RootPage;
+import utils.CommonUtils;
 
 public class SearchPage extends RootPage {
 
@@ -82,22 +83,21 @@ public class SearchPage extends RootPage {
 	@FindBy(id = "input-limit")
 	private WebElement showCountDropdown;
 	
-//	public void selectOptionInShowCountDropdown(String optionText) {
-//		elementUtilities.selectOptionFromDropdownFieldUsingText(showCountDropdown, optionText);}
-//
-//
-//	public void selectSortOptionInDropdownField(String optionText) {
-//	elementUtilities.selectOptionFromDropdownFieldUsingText(sortDropdownField, optionText);}
-//
-//	public boolean areProductsDisplayedInAscendingOrder() {
-//		List<String> originalList = elementUtilities.getTextOfElements(sortedProducts) ;
-//		return CommonUtilities.areItemsinListInAscendingOrder(originalList);
-//	}
-//	
-//	public ProductComparisionPage selectProductCompareOption() {
-//		elementUtilities.clickOnElement(productCompareOption);
-//		return new ProductComparisionPage(driver);
-//	}
+	public void selectOptionInShowCountDropdown(String optionText) {
+		elementUtilities.selectOptionFromDropdownFieldUsingText(showCountDropdown, optionText);}
+
+	public void selectSortOptionInDropdownField(String optionText) {
+	elementUtilities.selectOptionFromDropdownFieldUsingText(sortDropdownField, optionText);}
+
+	public boolean areProductsDisplayedInAscendingOrder() {
+		List<String> originalList = elementUtilities.getTextOfElements(sortedProducts) ;
+		return CommonUtils.areItemsinListInAscendingOrder(originalList);
+	}
+	
+	public ProductComparisionPage selectProductCompareOption() {
+		elementUtilities.clickOnElement(productCompareOption);
+		return new ProductComparisionPage(driver);
+	}
 
 	public void selectGridOption() {
 		elementUtilities.clickOnElement(gridOption);

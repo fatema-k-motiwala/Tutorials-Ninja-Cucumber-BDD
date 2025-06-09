@@ -44,6 +44,7 @@ public class Register extends Base {
 	public void user_clicks_on_my_account_dropmenu() {
 		homePage.clickOnmyAccountDropMenu();
 	}
+	
 
 	@When("User selects Register option")
 	public void user_selects_register_option() {

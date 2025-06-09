@@ -37,10 +37,10 @@ public class ReturnsPage extends RootPage {
 		elementUtilities.clickOnElement(reasonForReturnFirstOption);
 	}
 
-//	public ReturnInformationPage clickOnViewOption() {
-//		elementUtilities.clickOnElement(viewOption);
-//		return new ReturnInformationPage(driver);
-//	}
+	public ReturnInformationPage clickOnViewOption() {
+		elementUtilities.clickOnElement(viewOption);
+		return new ReturnInformationPage(driver);
+	}
 
 	public MyAccountPage clickOnAccountBreadCrumb() {
 		elementUtilities.clickOnElement(accountBreadCrumb);

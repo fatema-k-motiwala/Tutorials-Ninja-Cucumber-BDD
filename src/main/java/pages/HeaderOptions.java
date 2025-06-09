@@ -65,15 +65,17 @@ public class HeaderOptions extends RootPage {
 	public String getSearchBoxPlaceHolderText() {
 		return elementUtilities.getElementDomAttribute(searchBox, "placeholder");
 	}
+
 	public MyAccountPage selectMyAccountOption() {
 		elementUtilities.clickOnElement(myAccountOption);
 		return new MyAccountPage(driver);
 	}
+
 	public ContactUsPage selectPhoneIcon() {
 		elementUtilities.clickOnElement(phoneIcon);
 		return new ContactUsPage(driver);
 	}
-	
+
 	public ShoppingCartPage selectshoppingCartHeaderIcon() {
 		elementUtilities.clickOnElement(shoppingCartHeaderIcon);
 		return new ShoppingCartPage(driver);
@@ -92,6 +94,7 @@ public class HeaderOptions extends RootPage {
 		elementUtilities.clickOnElement(shoppingCartHeaderOption);
 		return new ShoppingCartPage(driver);
 	}
+
 	public ShoppingCartPage selectcheckoutIcon() {
 		elementUtilities.clickOnElement(checkoutIcon);
 		return new ShoppingCartPage(driver);
@@ -101,6 +104,7 @@ public class HeaderOptions extends RootPage {
 		elementUtilities.clickOnElement(searchButton);
 		return new SearchPage(driver);
 	}
+
 	public boolean isSearchBoxFieldDisplayed() {
 		return elementUtilities.isElementDisplayed(searchBox);
 	}
@@ -112,7 +116,6 @@ public class HeaderOptions extends RootPage {
 	public boolean areSearchBoxFieldAndSearchButtonDisplayed() {
 		return isSearchBoxFieldDisplayed() && isSearchButtonDisplayed();
 	}
-
 
 	public LoginPage selectHeartIcon() {
 		elementUtilities.clickOnElement(heartIcon);
@@ -128,6 +131,12 @@ public class HeaderOptions extends RootPage {
 		elementUtilities.clickOnElement(myAccountDropMenu);
 	}
 
+	public AccountLogoutPage selectLogoutOption() {
+		elementUtilities.clickOnElement(logoutOption);
+		return new AccountLogoutPage(driver);
+	}
+
+
 	public RegisterPage selectRegisterOption() {
 		elementUtilities.clickOnElement(registerOption);
 		return new RegisterPage(driver);
@@ -142,7 +151,6 @@ public class HeaderOptions extends RootPage {
 		elementUtilities.clickOnElement(logo);
 		return new HomePage(driver);
 	}
-
 
 	public boolean isLogoutOptionDisplayed() {
 		return elementUtilities.isElementDisplayed(logoutOption);
@@ -164,6 +172,9 @@ public class HeaderOptions extends RootPage {
 		return new LoginPage(driver);
 	}
 
-	
-	
+	public SearchPage enterProductAndClickOnSearchButton(String productName) {
+		enterProductIntoSearchBoxField(productName);
+		return selectSearchButton();
+	}
+
 }

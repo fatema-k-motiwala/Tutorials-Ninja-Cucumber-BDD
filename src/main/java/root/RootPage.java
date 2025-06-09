@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import pages.AccountLogoutPage;
 import pages.FooterOptionsPage;
 import pages.HeaderOptions;
 import pages.HomePage;
@@ -41,6 +42,10 @@ public class RootPage {
 	
 	public String getPageLevelSuccess() {
 		return elementUtilities.getElementText(pageLevelSuccess);
+	}
+	
+	public AccountLogoutPage getLogoutPage() {
+		return new AccountLogoutPage(driver);
 	}
 	
 	public String getPageHeading()

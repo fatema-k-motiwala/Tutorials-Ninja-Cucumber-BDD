@@ -1,6 +1,7 @@
 package utils;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.Keys;
@@ -27,6 +28,23 @@ public class ElementUtilities {
 			b = element.isSelected();
 		}
 		return b;
+	}
+	
+	public List<String> getTextOfElements(List<WebElement> items) {
+		List<String> itemNames =  new 	ArrayList<>();
+		for(WebElement item: items) 
+		{
+		itemNames.add(getElementText(item));		
+		}
+		return itemNames;
+	}
+	
+	public void clickEitherOfTheseElements(WebElement elementOne, WebElement elementTwo) {
+		if(isElementDisplayed(elementOne)) {
+			elementOne.click();
+		}else {
+			elementTwo.click();
+		}
 	}
 	
 	public int getElementsCount(List<WebElement> elements)

@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
 import javax.imageio.ImageIO;
@@ -39,6 +41,13 @@ public class CommonUtils {
 		}
 	return prop;
 	}
+	
+	public static boolean areItemsinListInAscendingOrder(List<String> list) {
+		List<String> sortedList = list;
+		Collections.sort(sortedList);
+		return list.equals(sortedList);
+	}
+
 	
 	public static int convertToInteger(String text) {
 		return Integer.parseInt(text);
